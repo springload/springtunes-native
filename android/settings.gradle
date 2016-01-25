@@ -1,0 +1,3 @@
+rootProject.name = 'Springtunes'
+
+include ':app'
