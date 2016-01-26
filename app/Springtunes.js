@@ -7,11 +7,14 @@ import React, {
   Text,
   View,
   TouchableHighlight,
+  TouchableOpacity,
   Navigator,
   ListView,
   ScrollView,
   RefreshControl,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  SliderIOS,
+  Image
 } from 'react-native';
 
 import styles from '../styles';
@@ -29,9 +32,13 @@ class Springtunes extends Component {
     this._onPressNext = this._onPressNext.bind(this);
     this._onPressBack = this._onPressBack.bind(this);
     this._onPressPause = this._onPressPause.bind(this);
+    this.setVolume = this.setVolume.bind(this);
+    this.sendVolume = this.sendVolume.bind(this);
 
     this.state = {
-      track: null
+      track: null,
+      volume: null,
+      playing: null
     }
   }
 
@@ -56,12 +63,24 @@ class Springtunes extends Component {
   }
 
   _onPressPause() {
+    let that = this;
+
     fetch(`${config.api}playing`, {
       method: 'PUT',
       headers: config.jsonHeaders,
       body: JSON.stringify({
       })
+    })
+    .then(response => { return response.json() })
+    .then(json => {
+      that.setState({
+        playing: json.playing
+      });
     });
+
+    that.setState({
+      playing: !this.state.playing
+    })
   }
 
   getTrackInfo() {
@@ -70,9 +89,11 @@ class Springtunes extends Component {
 
   updateTrackInfo(response) {
     let that = this;
-    response.json().then(function(j) {
+    response.json().then(function(json) {
       that.setState({
-        track: j.track
+        track: json.track,
+        volume: Math.floor(json.volume * 100),
+        playing: json.playing
       });
     });
   }
@@ -82,48 +103,95 @@ class Springtunes extends Component {
     setInterval(this.getTrackInfo, 5000);
   }
 
+  setVolume(value) {
+    this.setState({
+      volume: value
+    })
+  }
+
+  sendVolume(value) {
+    let that = this;
+
+    fetch(`${config.api}volume`, {
+      method: 'PUT',
+      headers: config.jsonHeaders,
+      body: JSON.stringify({
+        volume: value
+      })
+    })
+    .then(response => { return response.json() })
+    .then(json => {
+      that.setState({
+        volume: Math.floor(json.volume * 100)
+      })
+    })
+  }
+
   render() {
     let track = this.state.track;
 
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Springtunes!
-        </Text>
-        {track ?
-        <Text style={styles.track}>
-          {track.track_resource.name} by {track.artist_resource.name}
-        </Text> : null }
-        <TouchableHighlight onPress={this._onPressNext}>
-          <Text style={styles.button}>
-            Next
+      <View  style={{backgroundColor: '#fff',  marginTop: 22,   flex: 1, flexDirection: 'column' }}>
+        <View style={{backgroundColor: '#fff', justifyContent: 'center', flexDirection: 'row', marginTop: 20, marginBottom: 10}}>
+          <Image
+            style={styles.logo}
+            resizeMode='contain'
+            source={require('../springtunes.png')}
+          />
+        </View>
+        <View style={{ alignItems: 'center', height: 300, flex: 1, backgroundColor: '#eee'}}>
+          {track ?
+          <Text style={styles.track}>
+            {track.track_resource.name}
+          </Text> : <Text style={styles.track}>Loading...</Text> }
+          <Text style={styles.artist}>
+          {track ? track.artist_resource.name : null }
           </Text>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this._onPressBack}>
-          <Text style={styles.button}>
-            Back
-          </Text>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this._onPressPause}>
-          <Text style={styles.button}>
-            Play/Pause
-          </Text>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this.props.onAbout}>
-          <Text style={styles.buttonSecondary}>
-            About
-          </Text>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this.props.onScroll}>
-          <Text style={styles.buttonSecondary}>
-            ScrollView example
-          </Text>
-        </TouchableHighlight>
 
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+          <View style={{ flexDirection:'row'  }}>
+            <TouchableOpacity onPress={this._onPressPause}>
+              <Text style={styles.flexButton}>
+                {this.state.playing ? 'Pause' : 'Play'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._onPressNext}>
+              <Text style={styles.flexButton}>
+                Next
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._onPressBack}>
+              <Text style={styles.flexButton}>
+                Back
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {this.state.volume === null ? null :
+          <Text>
+            Volume:
+          </Text> }
+
+          {this.state.volume === null ? null :
+          <SliderIOS
+            value={this.state.volume}
+            style={styles.slider}
+            step={2}
+            minimumValue={0}
+            maximumValue={100}
+            onValueChange={this.setVolume}
+            onSlidingComplete={this.sendVolume} /> }
+        </View>
+        <View style={{padding: 0, flexDirection:'row', alignItems: 'center', backgroundColor: '#ddd', height: 55, justifyContent:'center'   }}>
+          <TouchableOpacity onPress={this.props.onAbout}>
+            <Text style={styles.buttonSecondary}>
+              About
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.props.onScroll}>
+            <Text style={styles.buttonSecondary}>
+              ScrollView example
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }

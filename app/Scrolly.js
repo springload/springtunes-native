@@ -6,7 +6,7 @@ import React, {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
   Navigator,
   ListView,
   ScrollView,
@@ -39,9 +39,9 @@ class Scrolly extends Component {
 
   renderRow(rowData) {
     return (
-        <TouchableHighlight onPress={this.props.onDetail}>
+        <TouchableOpacity onPress={this.props.onDetail}>
           <Text style={styles.listViewRow}>{rowData}</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
     )
   }
 
@@ -49,28 +49,37 @@ class Scrolly extends Component {
 
     const refreshControl =  (
       <RefreshControl
-            refreshing={this.state.isRefreshing}
-            onRefresh={this._onRefresh}
-            tintColor="#ff0000"
-            title="Loading..."
-            colors={['#ff0000', '#00ff00', '#0000ff']}
-            progressBackgroundColor="#ffff00"
+        refreshing={this.state.isRefreshing}
+        onRefresh={this._onRefresh}
+        tintColor="#ff0000"
+        title="Loading..."
+        colors={['#ff0000', '#00ff00', '#0000ff']}
+        progressBackgroundColor="#ffff00"
       />
     );
 
     return (
-      <View style={styles.listView}>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={this.renderRow}
-          style={styles.listViewElement}
-          refreshControl={refreshControl}
-        />
-        <TouchableHighlight onPress={this.props.onBack}>
-          <Text style={styles.buttonSecondary}>
-            Back
+      <View style={styles.viewContainer}>
+        <View style={styles.toolbar}>
+          <TouchableOpacity onPress={this.props.onBack}>
+            <Text style={styles.toolbarButton}>
+              Back
+            </Text>
+          </TouchableOpacity>
+          <Text style={styles.toolbarTitle}>
+            ScrollView
           </Text>
-        </TouchableHighlight>
+          <Text style={styles.toolbarButton}>
+          </Text>
+        </View>
+        <View style={styles.listView}>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this.renderRow}
+            style={styles.listViewElement}
+            refreshControl={refreshControl}
+          />
+        </View>
       </View>
     );
   }
