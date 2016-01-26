@@ -104,7 +104,7 @@ module.exports = StyleSheet.create({
   },
   listView: {
     padding: 10,
-    paddingTop: 16,
+    paddingTop: 12,
     backgroundColor: '#fff',
     flex: 1
   },
@@ -122,8 +122,8 @@ module.exports = StyleSheet.create({
     height: 10,
     margin: 10,
     width: 250,
-    marginBottom: 30,
-    marginTop: 30
+    paddingBottom: 30,
+    paddingTop: 30
 
   },
   map: {

@@ -29,18 +29,29 @@ import Mappy       from './app/Mappy';
 
 
 class SpringtunesStage extends Component {
+
   constructor(props) {
     super(props)
     this.state = {}
+    this._navigatorDidFocus = this._navigatorDidFocus.bind(this);
+  }
+
+
+  /**
+   * Called after initial render and any successful transitions
+   */
+  _navigatorDidFocus(e) {
+    let route = e.data.route;
+
   }
 
   renderScene(route, navigator) {
+
     if (route.name === 'home') {
       return(
         <Springtunes
           name={route.name}
           onAbout={() => { utils._push('about', route, navigator) }}
-
         />
       );
     }
@@ -57,7 +68,7 @@ class SpringtunesStage extends Component {
       return (
         <About
           name={route.name}
-          onMap={() => { utils._push('map', route, navigator )}}
+          onMap={() => { utils._push('map', route, navigator, Navigator.SceneConfigs.FloatFromBottom )}}
           onScroll={() => { utils._push('scroll', route, navigator) }}
           onBack={() => { utils._pop(route, navigator) }} />
       );
@@ -81,11 +92,21 @@ class SpringtunesStage extends Component {
     }
   }
 
+  configureScene(route) {
+      if (route.sceneConfig) {
+        return route.sceneConfig;
+      }
+
+      return Navigator.SceneConfigs.FloatFromRight;
+  }
+
   render() {
     return (
       <Navigator
         initialRoute={{name: 'home', index: 0}}
+        configureScene={this.configureScene}
         renderScene={this.renderScene}
+        ref={navigator => { navigator && navigator.navigationContext.addListener('didfocus', this._navigatorDidFocus); }}
       />
     )
   }

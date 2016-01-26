@@ -92,14 +92,15 @@ class Springtunes extends Component {
     response.json().then(function(json) {
       that.setState({
         track: json.track,
-        playing: json.playing
+        playing: json.playing,
+        volume: Math.floor(json.volume * 100)
       });
 
-      if (that.state.volume === null) {
-        that.setState({
-          volume: Math.floor(json.volume * 100)
-        })
-      }
+      // if (that.state.volume === null) {
+      //   that.setState({
+      //     volume: Math.floor(json.volume * 100)
+      //   })
+      // }
     });
   }
 
@@ -109,9 +110,9 @@ class Springtunes extends Component {
   }
 
   setVolume(value) {
-    this.setState({
-      volume: value
-    })
+    // this.setState({
+    //   volume: value
+    // })
   }
 
   sendVolume(value) {
@@ -126,9 +127,9 @@ class Springtunes extends Component {
     })
     .then(response => { return response.json() })
     .then(json => {
-      that.setState({
-        volume: Math.floor(json.volume * 100)
-      })
+      // that.setState({
+      //   volume: Math.floor(json.volume * 100)
+      // })
     })
   }
 
@@ -171,7 +172,7 @@ class Springtunes extends Component {
             </TouchableOpacity>
           </View>
           {this.state.volume === null ? null :
-          <Text>
+          <Text style={{ marginTop: 16 }}>
             Volume:
           </Text> }
 
