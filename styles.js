@@ -39,7 +39,14 @@ module.exports = StyleSheet.create({
   toolbarButton: {
     width: 60,
     color: '#fff',
-    height: 14
+    height: 16,
+    textAlign: 'left'
+  },
+  toolbarButtonRight: {
+    width: 60,
+    color: '#fff',
+    height: 16,
+    textAlign: 'right'
   },
   toolbar: {
     paddingTop: 32,
@@ -48,7 +55,9 @@ module.exports = StyleSheet.create({
     paddingBottom: 12,
     paddingLeft: 20,
     paddingRight: 20,
-    alignItems: 'center'
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.25)'
   },
   toolbarTitle: {
     color: '#fff',
@@ -78,13 +87,14 @@ module.exports = StyleSheet.create({
   buttonSecondary: {
     textAlign: 'center',
     padding: 10,
-    backgroundColor: '#a9a9a9',
-    color: '#fff',
+    // backgroundColor: '#a9a9a9',
+    color: '#555',
     // marginBottom: 10,
-    borderRadius: 5,
+    // borderRadius: 5,
     flex: 1,
     marginRight: 10,
-    fontSize: 12
+    fontSize: 12,
+
   },
   instructions: {
     textAlign: 'center',
@@ -116,10 +126,44 @@ module.exports = StyleSheet.create({
     marginTop: 30
 
   },
+  map: {
+    height: 150,
+    margin: 0,
+    borderWidth: 0,
+    borderColor: '#000000',
+    flex: 1
+  },
   logo: {
     width: 150,
     height: 40,
-
   },
-  contentView: {flex: 1, backgroundColor: '#f3f3f3', padding: 20}
+  contentView: {
+    flex: 1,
+    backgroundColor: '#f3f3f3',
+    padding: 20
+  },
+  fullView: {
+    flex: 1,
+    backgroundColor: '#f3f3f3',
+    padding: 0
+  },
+  springtunes: {
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginTop: 20,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.1)'
+  },
+  springtunesFooter: {
+    padding: 0,
+    flexDirection:'row',
+    alignItems: 'center',
+    backgroundColor: '#ddd',
+    height: 55,
+    justifyContent:'center',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.02)'
+  }
 });

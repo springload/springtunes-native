@@ -92,9 +92,14 @@ class Springtunes extends Component {
     response.json().then(function(json) {
       that.setState({
         track: json.track,
-        volume: Math.floor(json.volume * 100),
         playing: json.playing
       });
+
+      if (that.state.volume === null) {
+        that.setState({
+          volume: Math.floor(json.volume * 100)
+        })
+      }
     });
   }
 
@@ -132,7 +137,7 @@ class Springtunes extends Component {
 
     return (
       <View  style={{backgroundColor: '#fff',  marginTop: 22,   flex: 1, flexDirection: 'column' }}>
-        <View style={{backgroundColor: '#fff', justifyContent: 'center', flexDirection: 'row', marginTop: 20, marginBottom: 10}}>
+        <View style={styles.springtunes}>
           <Image
             style={styles.logo}
             resizeMode='contain'
@@ -180,15 +185,10 @@ class Springtunes extends Component {
             onValueChange={this.setVolume}
             onSlidingComplete={this.sendVolume} /> }
         </View>
-        <View style={{padding: 0, flexDirection:'row', alignItems: 'center', backgroundColor: '#ddd', height: 55, justifyContent:'center'   }}>
+        <View style={styles.springtunesFooter}>
           <TouchableOpacity onPress={this.props.onAbout}>
             <Text style={styles.buttonSecondary}>
-              About
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.onScroll}>
-            <Text style={styles.buttonSecondary}>
-              ScrollView example
+              About the app
             </Text>
           </TouchableOpacity>
         </View>

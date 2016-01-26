@@ -25,6 +25,7 @@ import Springtunes from './app/Springtunes';
 import Scrolly     from './app/Scrolly';
 import Detail      from './app/Detail';
 import About       from './app/About';
+import Mappy       from './app/Mappy';
 
 
 class SpringtunesStage extends Component {
@@ -39,15 +40,25 @@ class SpringtunesStage extends Component {
         <Springtunes
           name={route.name}
           onAbout={() => { utils._push('about', route, navigator) }}
-          onScroll={() => { utils._push('scroll', route, navigator) }}
+
         />
       );
+    }
+
+    if (route.name === 'map') {
+      return (
+        <Mappy
+          name={route.name}
+          onBack={() => { utils._pop(route, navigator) }} />
+      )
     }
 
     if (route.name === 'about') {
       return (
         <About
           name={route.name}
+          onMap={() => { utils._push('map', route, navigator )}}
+          onScroll={() => { utils._push('scroll', route, navigator) }}
           onBack={() => { utils._pop(route, navigator) }} />
       );
     }
