@@ -5,14 +5,11 @@ This is a demo React Native App, so we can learn about the technology.
 Follow [this guide](https://facebook.github.io/react-native/docs/getting-started.html) to set up the tools you'll need.
 
 
-### Signing authorities:
+### Signing authorities
 
 To test on a real device, you'll need to have xCode signed in to the Apple Developer Programme.
 
-There's details in the UPM. Look for `mobile@springload.co.nz`.
-
-
-### Important note:
+### Important note
 
 To develop on the iOS simulator, the default settings in `AppDelegate.m` (xcode)
 will be fine:
@@ -37,7 +34,7 @@ with the app. You can do that by uncommenting this line:
 ```
 
 
-## Features/things to do:
+## Features/things to do
 
 * [ ] Styling the application (understanding styling in React Native)
 * [ ] Volume Slider
