@@ -3,6 +3,7 @@ import LastUpdated from '../components/LastUpdated';
 import IntelligentCurrentSong from '../containers/IntelligentCurrentSong';
 import IntelligentControls from '../containers/IntelligentControls';
 import Logo from '../components/Logo';
+import { Slider } from 'react-native-elements';
 import {
     View,
     Text
@@ -10,8 +11,8 @@ import {
 import { Container, Header, Title, Card, CardItem, Content, Footer, FooterTab, Button, Left, Right, Body, Icon } from 'native-base';
 
 const propTypes = {
-    lastUpdated: PropTypes.number.isRequired,
     fetchSongIfNeeded: PropTypes.func.isRequired,
+    lastUpdated: PropTypes.number,
 };
 
 class App extends Component {
@@ -19,9 +20,8 @@ class App extends Component {
         this.props.fetchSongIfNeeded();
     }
 
-    render() {
+    render() {        
         const { lastUpdated } = this.props;
-        
         return (
             <Container>
                 <Header>
@@ -32,14 +32,13 @@ class App extends Component {
 
                 <Content>
                     <IntelligentCurrentSong />
-                    {/*<View className="last-updated">
-                        <View className="u-text-uppercase">
-                            <Text>Now Playing</Text>    
-                        </View>
-                        <LastUpdated lastUpdated={lastUpdated} />
-                    </View>*/}
+                    <Card>
+                        <CardItem>
+                            <LastUpdated lastUpdated={lastUpdated} />
+                        </CardItem>
+                    </Card>
                 </Content>
-
+                
                 <IntelligentControls />
             </Container>
         );

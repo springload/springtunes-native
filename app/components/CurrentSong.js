@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
     View,
     Text,
@@ -6,9 +6,9 @@ import {
     Linking,
     TouchableOpacity,
 } from 'react-native';
-import Processing from '../components/Processing';
+import { Slider } from 'react-native-elements';
 import OpenUrl from '../components/common/OpenUrl';
-import { Card, CardItem, Left, Body, Title, Icon, Separator } from 'native-base';
+import { Content, Button, Card, CardItem, Left, Body, Title, Icon, Separator, Spinner } from 'native-base';
 
 const propTypes = {
     isFetching: PropTypes.bool.isRequired,
@@ -17,62 +17,69 @@ const propTypes = {
     error: PropTypes.string,
 };
 
-const CurrentSong = ({ currentSong, isFetching, hasError, error }) => (
-    <Card>
-        <CardItem header bordered>
-            <Icon name="headset" style={colorSpringload} />
-            <Title>Now playing</Title>
-        </CardItem>
-        {!isFetching &&
+class CurrentSong extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showToast: false,
+        }
+    }
+
+    render() {
+        const { currentSong, isFetching, hasError, error } = this.props;
+        return (
             <View>
-                
-                <CardItem>
-                    <Icon name='musical-note' style={colorSpringload} />
-                    <OpenUrl 
-                        urlLabel={currentSong.title}
-                        url={currentSong.link_track}
-                    />
-                </CardItem>
-                <CardItem>
-                    <Icon name='person' style={colorSpringload} />
-                    <OpenUrl 
-                        urlLabel={currentSong.artist}
-                        url={currentSong.link_artist}
-                    />
-                </CardItem>
-                <CardItem>
-                    <Icon name='albums' style={colorSpringload} />
-                    <OpenUrl 
-                        urlLabel={currentSong.album}
-                        url={currentSong.link_album}
-                    />
-                </CardItem>
+                <Card>
+                    <CardItem header bordered>
+                        <Icon name="headset" style={styleColorSpringload} />
+                        <Title>Now playing</Title>
+                    </CardItem>
+                    {!isFetching &&
+                        <View>                
+                            <CardItem>
+                                <Icon name='musical-note' style={styleColorSpringload} />
+                                <OpenUrl 
+                                    urlLabel={currentSong.title}
+                                    url={currentSong.link_track}
+                                />
+                            </CardItem>
+                            <CardItem>
+                                <Icon name='person' style={styleColorSpringload} />
+                                <OpenUrl 
+                                    urlLabel={currentSong.artist}
+                                    url={currentSong.link_artist}
+                                />
+                            </CardItem>
+                            <CardItem>
+                                <Icon name='albums' style={styleColorSpringload} />
+                                <OpenUrl 
+                                    urlLabel={currentSong.album}
+                                    url={currentSong.link_album}
+                                />
+                            </CardItem>
+                        </View>
+                    }
+                    {isFetching &&
+                        <CardItem style={{'alignSelf': 'center'}}>
+                            <Spinner color={springloadColor} />
+                        </CardItem>       
+                    }
+                    {!isFetching && hasError &&
+                        <CardItem>
+                            <Text style={{color: 'red'}}>{`An error occurred. Please try again.\nError details: ${error}`}</Text>
+                        </CardItem>       
+                    }
+                </Card>
             </View>
-        }
-        {isFetching &&
-            <CardItem>
-                <Body>
-                    <Processing />
-                </Body>
-            </CardItem>
-        }
-        {!isFetching && hasError &&
-        <CardItem>
-            <View>
-                <Text>
-                    Error occurred.<br />
-                    Details are: "{error}"
-                </Text>
-            </View>
-        </CardItem>
-        }
-    </Card>
-);
+        );
+    }
+}
 
 CurrentSong.propTypes = propTypes;
 
 export default CurrentSong;
 
-const colorSpringload = {
-    color: '#7DC265',
+const springloadColor = '#7DC265'
+const styleColorSpringload = {
+    color: springloadColor,
 };
